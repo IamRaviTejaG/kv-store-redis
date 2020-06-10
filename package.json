@@ -1,7 +1,7 @@
 {
-  "name": "restful-cli-key-value-store",
+  "name": "kv-store",
   "version": "1.0.0",
-  "description": "A RESTful API & CLI for a key-value store.",
+  "description": "A RESTful API & CLI for an ultra fast key-value store.",
   "main": "index.js",
   "bin": {
     "store-cli": "./store-cli.js"
