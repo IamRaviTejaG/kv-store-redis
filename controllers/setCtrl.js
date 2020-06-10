@@ -1,9 +1,7 @@
 import dbConnection from '../config/database'
-import redisClient from '../config/redisClient'
+import { redisClient, protected_keys } from '../config/redisClient'
 const itemSchema = require('../schema/itemSchema')
 const ItemModel = dbConnection.model('item', itemSchema)
-
-const protected_keys = ['DATABASE_CALL_COUNT', 'REDIS_CALL_COUNT', 'REDIS_UPDATE_TTL_CALL_COUNT']
 
 export default {
   /**
@@ -13,7 +11,7 @@ export default {
    */
   setValueString: (req, res) => {
     if (protected_keys.includes(req.params.key)) {
-      res.status(200).json({ error: "Error accessing protected keys!" })
+      res.status(200).json({ error: "Error setting protected keys!" })
     } else {
       // Increment redis db call counter (for write operation below)
       redisClient.incr('DATABASE_CALL_COUNT')
