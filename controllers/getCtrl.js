@@ -14,7 +14,7 @@ export default {
    */
   getValue: (req, res) => {
     if (protected_keys.includes(req.params.key)) {
-      res.status(200).json({ error: "Error setting protected keys!" })
+      res.status(200).json({ error: "Error getting protected keys!" })
     } else {
       // First checks if the key exists in redis, if yes, sends it out,
       // else makes a db call, stores it in redis for further use, and sends it
