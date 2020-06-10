@@ -3,7 +3,7 @@ import redisClient from '../config/redisClient'
 const itemSchema = require('../schema/itemSchema')
 const ItemModel = dbConnection.model('item', itemSchema)
 
-protected_keys = ['DATABASE_CALL_COUNT', 'REDIS_CALL_COUNT', 'REDIS_UPDATE_TTL_CALL_COUNT']
+const protected_keys = ['DATABASE_CALL_COUNT', 'REDIS_CALL_COUNT', 'REDIS_UPDATE_TTL_CALL_COUNT']
 
 export default {
   /**
