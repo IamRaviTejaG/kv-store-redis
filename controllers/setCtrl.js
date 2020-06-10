@@ -10,22 +10,26 @@ export default {
    * @param  res
    */
   setValueString: (req, res) => {
-    // Increment redis db call counter (for write operation below)
-    redisClient.incr('DATABASE_CALL_COUNT')
-    ItemModel.updateOne(
-      { key: req.params.key },
-      { value: req.params.value },
-      { upsert: true }
-    ).then(result => {
-      // Adds value to redis for update operations
-      if (result.nModified !== 0) {
-        redisClient.set(req.params.key, req.params.value, 'EX', 21600)
-        redisClient.incr('REDIS_CALL_COUNT')  // Increment redis call counter
-      }
-      res.status(200).json({ message: 'New value set successfully!' })
-    }).catch(err => {
-      res.status(500).json({ error: err })
-    })
+    if ['DATABASE_CALL_COUNT', 'REDIS_CALL_COUNT', 'REDIS_UPDATE_TTL_CALL_COUNT'].includes(req.params.key) {
+      res.status(200).json({ error: "Error accessing protected keys!" })
+    } else {
+      // Increment redis db call counter (for write operation below)
+      redisClient.incr('DATABASE_CALL_COUNT')
+      ItemModel.updateOne(
+        { key: req.params.key },
+        { value: req.params.value },
+        { upsert: true }
+      ).then(result => {
+        // Adds value to redis for update operations
+        if (result.nModified !== 0) {
+          redisClient.set(req.params.key, req.params.value, 'EX', 21600)
+          redisClient.incr('REDIS_UPDATE_TTL_CALL_COUNT')  // Increment redis call counter
+        }
+        res.status(200).json({ message: 'New value set successfully!' })
+      }).catch(err => {
+        res.status(500).json({ error: err })
+      })
+    }
   },
 
   /**
@@ -46,7 +50,7 @@ export default {
       // if already existing in the redis cache
       if (result.nModified !== 0) {
         redisClient.set(req.body.key, req.body.value, 'EX', 21600)
-        redisClient.incr('REDIS_CALL_COUNT')  // Increment redis call counter
+        redisClient.incr('REDIS_UPDATE_TTL_CALL_COUNT')  // Increment redis call counter
       }
       res.status(200).json({ message: 'New value set successfully!' })
     }).catch(err => {

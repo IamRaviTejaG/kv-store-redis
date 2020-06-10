@@ -29,7 +29,7 @@ export default {
               res.status(200).json({ message: 'No result found!' })
             } else {
               redisClient.set(req.params.key, result[0].value, 'EX', 21600)
-              redisClient.incr('REDIS_CALL_COUNT')  // Increment redis call counter
+              redisClient.incr('REDIS_UPDATE_TTL_CALL_COUNT')  // Increment redis call counter
               res.status(200).json({ value: result[0].value })
             }
           }).catch(err => {
@@ -37,7 +37,7 @@ export default {
           })
         } else {
           redisClient.set(req.params.key, reply, 'EX', 21600)
-          redisClient.incr('REDIS_CALL_COUNT')  // Increment redis call counter
+          redisClient.incr('REDIS_UPDATE_TTL_CALL_COUNT')  // Increment redis call counter
           res.status(200).json({ value: reply })
         }
       } 
