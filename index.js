@@ -3,7 +3,7 @@ import app from './config/app'
 
 require('dotenv').config()
 
-const server = async app.listen(process.env.PORT, process.env.HOST, () => {
+const server = app.listen(process.env.PORT, process.env.HOST, () => {
   console.log(`Server live at http://${process.env.HOST}:${process.env.PORT}`)
   alerts.pushover('OK', `Server started successfully.`)
 }).on('error', error => {
