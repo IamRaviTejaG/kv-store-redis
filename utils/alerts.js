@@ -11,7 +11,7 @@ export default {
     axios.post(process.env.PUSHOVER_API_URL, null, { params: {
       'token': process.env.PUSHOVER_TOKEN,
       'user': process.env.PUSHOVER_USER_KEY,
-      'title': `${process.env.MACHINE_NAME} - ${process.env.APP_NAME} - [APP_STATE]: ${status}`,
+      'title': `${process.env.MACHINE_NAME} - STATUS - [${status}]`,
       'message': `${process.env.EC2_MACHINE_DNS_URL}: ${process.env.APP_NAME}: ${message}`
     }})
   }
