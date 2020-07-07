@@ -1,3 +1,4 @@
+import alerts from '../utils/alerts'
 import mongoose from 'mongoose'
 require('dotenv').config()
 
@@ -11,5 +12,13 @@ const dbOptions = {
 }
 
 const dbConnection = mongoose.createConnection(dbURL, dbOptions)
+
+dbConnection.on('connected', () => {
+  alerts.pushover('OK', `MongoDB connection established successfully.`)
+})
+
+dbConnection.on('error', error => {
+  alerts.pushover('CRITICAL', `MongoDB connection couldn't be established. ${JSON.stringify(error)}`)
+})
 
 export default dbConnection
